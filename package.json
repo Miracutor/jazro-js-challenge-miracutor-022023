@@ -1,0 +1,50 @@
+{
+  "name": "jazro-js-challenge-miracutor-022023",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "prettier-format": "prettier src/*.{js,jsx,ts,tsx,json} --write"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": true,
+    "semi": true,
+    "singleQuote": true,
+    "printWidth": 100,
+    "trailingComma": "all",
+    "importOrder": [
+      "^(^react$|@react|react|^recoil$)",
+      "^@mui/(.*)$",
+      "<THIRD_PARTY_MODULES>",
+      "^@/(.*)$",
+      "^[./]"
+    ],
+    "importOrderGroupNamespaceSpecifiers": true,
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.11.8",
+    "@mui/x-data-grid": "^5.17.23",
+    "axios": "^1.3.2",
+    "mui-image": "github:Miracutor/mui-image#v1.1.0-beta.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "2.3.2"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.0.0",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@vitejs/plugin-react-swc": "^3.1.0",
+    "prettier": "2.8.4",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.1"
+  }
+}
