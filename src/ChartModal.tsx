@@ -10,10 +10,10 @@ const ChartModal = ({
 	chartData,
 	codeData,
 }: {
-	open: boolean;
-	handleClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void;
-	chartData: { country: string; population: number }[];
-	codeData: Map<string, string>;
+	open: boolean; //Modal open state
+	handleClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void; //handle closing modal
+	chartData: { country: string; population: number }[]; //data for chart
+	codeData: Map<string, string>; //country code data for chart label reference
 }) => {
 	return (
 		<Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title">
