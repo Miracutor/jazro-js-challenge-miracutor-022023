@@ -7,6 +7,7 @@ import Skeleton from '@mui/material/Skeleton';
 import {
 	DataGrid,
 	GridColDef,
+	GridFilterModel,
 	GridRenderCellParams,
 	GridSelectionModel,
 	GridToolbarContainer,
@@ -48,8 +49,19 @@ const processCountriesData = (data: any[]) => {
 	return newData;
 };
 
+//The function that will search for matches and wrap those matches found.
+const wrapMatches = (
+	originalString: string,
+	searchTerm: string | RegExp,
+	wrapStart: string,
+	wrapEnd: string,
+): string => {
+	const regex = new RegExp(searchTerm, 'gi');
+	return originalString.replace(regex, `${wrapStart}$&${wrapEnd}`);
+};
+
 //Column definition
-const columns: GridColDef[] = [
+const initialColumns: GridColDef[] = [
 	{ field: 'id', headerName: 'No.', width: 60, getApplyQuickFilterFn: undefined },
 	{
 		field: 'flags',
@@ -90,8 +102,10 @@ const CountryTable = () => {
 	const [countries, setCountries] = useState<CountryData[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
+	const [filterModel, setFilterModel] = useState<GridFilterModel>({ items: [] });
 	const [openChartModal, setOpenChartModal] = useState(false);
 	const [chartData, setChartData] = useState<{ country: string; population: number }[]>([]);
+	const [columns, setColumns] = useState(initialColumns);
 
 	useEffect(() => {
 		fetchCountriesData().then((it) => {
@@ -112,10 +126,53 @@ const CountryTable = () => {
 		//Using localStorage directly is too slow
 	}, []);
 
+	//String highlighting mechanism
 	const handleSelectionModelChange = (newSelectionModel: GridSelectionModel) => {
 		setSelectionModel(newSelectionModel); //Save to state first
 		localStorage.setItem('jazro-mui-selection-model', newSelectionModel.join(', '));
 	};
+
+	const handleFilterModelChange = (newFilterModel: GridFilterModel) => {
+		setLoading(true);
+		setFilterModel(newFilterModel);
+	};
+
+	useEffect(() => {
+		const colName = columns[2];
+		const colCapital = columns[4];
+
+		//Change new RenderCell to render highlight
+		const newRenderCell = (params: GridRenderCellParams<string>) => {
+			const finalValue = params.value || '';
+			if (!filterModel.quickFilterValues || filterModel.quickFilterValues?.length === 0)
+				return (
+					<div className="MuiDataGrid-cellContent" title={finalValue}>
+						{finalValue}
+					</div>
+				);
+			else
+				return (
+					<div
+						className="MuiDataGrid-cellContent"
+						title={finalValue}
+						dangerouslySetInnerHTML={{
+							__html: wrapMatches(
+								finalValue,
+								filterModel.quickFilterValues.join('|'),
+								'<span style="background-color:yellow;color:black;">',
+								'</span>',
+							),
+						}}
+					/>
+				);
+		};
+
+		colName.renderCell = newRenderCell;
+		colCapital.renderCell = newRenderCell;
+
+		setColumns([columns[0], columns[1], colName, columns[3], colCapital]);
+		setLoading(false);
+	}, [filterModel]);
 
 	const handleOpenModal = (e: { preventDefault: () => void }) => {
 		e.preventDefault();
@@ -164,9 +221,11 @@ const CountryTable = () => {
 							componentsProps={{
 								toolbar: {
 									showQuickFilter: true,
-									quickFilterProps: { debounceMs: 500 },
+									quickFilterProps: { debounceMs: 1000 },
 								},
 							}}
+							filterModel={filterModel}
+							onFilterModelChange={handleFilterModelChange}
 						/>
 					</div>
 				</div>

@@ -10,7 +10,7 @@ NOTE: This repository is for solely for JAZRO Mid-level Javascript Challenge for
 - [x] Images / HTML
 - [x] Filtering
 - [x] Row selection
-- [ ] String highlighting
+- [x] String highlighting
 - [x] Storage mechanisms
 - [x] Bonus task: Chart
 
