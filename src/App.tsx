@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
 
 //Code split CountryTable
 const CountryTable = React.lazy(() => import('./CountryTable'));
@@ -26,29 +26,43 @@ const App = () => {
 	return (
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
-			<Container maxWidth="md">
-				<Box component="header" sx={{ mb: 5 }}>
-					<Typography variant="h2" component="h1">
-						JAZRO JavaScript Challenge
-					</Typography>
-					<Typography variant="h3" component="h2">
-						Miracutor - 02/2023
-					</Typography>
+			<Box position="relative" minHeight="100vh">
+				<Box paddingBottom={{'xs':"7rem",'sm':"5rem"}}>
+					<Container maxWidth="md">
+						<Box component="header" sx={{ mb: 5 }}>
+							<Typography variant="h2" component="h1">
+								JAZRO JavaScript Challenge
+							</Typography>
+							<Typography variant="h3" component="h2">
+								Miracutor - 02/2023
+							</Typography>
+						</Box>
+						<CountryTable />
+					</Container>
 				</Box>
-				<CountryTable />
-			</Container>
-			<Box component="footer" sx={{ bgcolor: 'secondary.dark', py: 4, mt: 5 }}>
-				<Container maxWidth="lg">
+				<Footer>
 					<Typography variant="h6" align="center" gutterBottom>
 						Created by Muhammad Danial Danish Bin Roslan with{' '}
 						<Box component="span" color="#f6423c">
 							♥
 						</Box>
 					</Typography>
-				</Container>
+				</Footer>
 			</Box>
 		</ThemeProvider>
 	);
 };
 
 export default App;
+
+const Footer = styled('footer')(({ theme }) => ({
+	width: '100%',
+	backgroundColor: theme.palette.secondary.dark,
+	position: 'absolute',
+	bottom: 0,
+	paddingTop: '10px',
+	height: '3rem',
+	[theme.breakpoints.down('sm')]: {
+		height: '5rem',
+	},
+}));

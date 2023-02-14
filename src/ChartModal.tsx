@@ -23,7 +23,7 @@ const ChartModal = ({
 					top: '50%',
 					left: '50%',
 					transform: 'translate(-50%, -50%)',
-					minWidth: 750,
+					minWidth: { xs: 400, sm: 750 },
 					bgcolor: 'background.paper',
 					border: '2px solid #000',
 					boxShadow: 24,
@@ -34,7 +34,7 @@ const ChartModal = ({
 					Population Chart
 				</Typography>
 				<ResponsiveContainer width="100%" height={400}>
-					<BarChart width={700} data={chartData}>
+					<BarChart data={chartData}>
 						<CartesianGrid />
 						<XAxis dataKey="country" />
 						<YAxis
